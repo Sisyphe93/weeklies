@@ -10,7 +10,10 @@ void printBytesCount(ssize_t bytes[], char *fileName){
         if (bytes[i] > 0)
             printf(" %ld", bytes[i]);
     }
-    printf(" %s\n", fileName);
+    if (fileName)
+        printf(" %s\n", fileName);
+    else
+        printf("\n");
 }
 
 int isBlank(char c){
@@ -100,14 +103,24 @@ void readFileAndFlag(char* fileName, char c){
         free(line);
 }
 
-int main(int argc, char** argv){
-    // if (argc > 2)
-    //     readFileAndFlag(argv[2], argv[1][1]);
-    // else if (argc == 2){
-    //     readFileAndFlag(argv[1], '\0');
-    // }
+void readFromSdtInput(char c){
+
     char str[10000];
-    scanf("%s", str);
-    printf("%s\n", str);
+    ssize_t bytes[] = {0,0,0,0};
+    while (fgets(str, sizeof(str), stdin) != NULL){
+        flags(str, c, bytes);
+    }
+    printBytesCount(bytes, NULL);
+}
+
+int main(int argc, char** argv){
+    if (argc > 2)
+        readFileAndFlag(argv[2], argv[1][1]);
+    else if (argc == 2){
+        if (argv[1][0] != '-')
+            readFileAndFlag(argv[1], '\0');
+        else
+            readFromSdtInput(argv[1][1]);
+    }
     return 0;
 }
