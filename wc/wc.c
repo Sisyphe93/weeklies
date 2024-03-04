@@ -114,13 +114,17 @@ void readFromSdtInput(char c){
 }
 
 int main(int argc, char** argv){
-    if (argc > 2)
-        readFileAndFlag(argv[2], argv[1][1]);
-    else if (argc == 2){
-        if (argv[1][0] != '-')
-            readFileAndFlag(argv[1], '\0');
-        else
+    
+    if (argc == 1)
+        readFromSdtInput(' ');
+    if (argc == 2){
+        if (argv[1][0] == '-')
             readFromSdtInput(argv[1][1]);
+        else
+            readFileAndFlag(argv[1], ' ');
+    }
+    else if (argc > 2){
+        readFileAndFlag(argv[2], argv[1][1]);
     }
     return 0;
 }
